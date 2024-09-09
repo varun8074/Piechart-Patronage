@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Canvas Example</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-image: url('https://images.unsplash.com/photo-1682687220208-22d7a2543e88?ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1075&q=80');
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+
+    #canvas-container {
+      text-align: center;
+      background-color: rgba(255, 255, 255, 0.9);
+      background: transparent;
+      backdrop-filter: blur(1px);
+      padding: 20px;
+      border-radius: 10px;
+    }
+
+    canvas {
+      backdrop-filter: blur(5px);
+      margin: 20px;
+    }
+
+    button {
+      margin: 5px;
+      padding: 10px 20px;
+      font-size: 14px;
+      background-color: #007bff;
+      border: none;
+      border-radius: 4px;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    input[type="text"] {
+      font-size: 18px;
+      padding: 10px;
+      width: 200px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+
+  {% if user_color %}
+  <script>
+      // Assign the stored value to a JavaScript variable
+      var pick = "{{user_color}}";
+      console.log('pick:',pick);
+
+  </script>
+
+  {% endif %} 
+
+
+
+
+
+  <div id="canvas-container">
+    <h1>Enter Password</h1>
+    <canvas id="myCanvas" width="400" height="400"></canvas>
+    <div>
+      <button onclick="rotateClockwise()">Rotate Clockwise</button>
+      <button onclick="rotateCounterClockwise()">Rotate Counter-Clockwise</button>
+      <button onclick="accessLeftElement()">Left Element</button>
+      <button onclick="accessRightElement()">Right Element</button>
+      
+
+    </div>
+    
+    <form action="/authenticate_user" method="post">
+      <label for="email"><FONT COLOR=white>Email:</FONT></label><br>
+      <input type="email" id="email" name="email" required><br><br>
+      <input type="password" id="textbox" name="password" readonly>
+      <input type="submit" value="Compare">
+    </form>
+    <button onclick="clearTextBox()">Clear password</button>
+  </div>
+
+  <script>
+    let colorArraay;
+
+
+
+    const canvas = document.getElementById('myCanvas');
+    const context = canvas.getContext('2d');
+    const outerRadius = 150;
+    const innerRadius = 135;
+    const sectorAngle = 2 * Math.PI / 8;
+
+
+
+
+     //                y         g         b           v         p           w       r            o
+    const ycolors = ['#FFFF00', '#008000', '#0000FF', '#4B0082', '#EE82EE', '#fff', '#FF0000', '#FFA500'];
+    const gcolors = ['#008000', '#0000FF', '#4B0082', '#EE82EE', '#fff', '#FF0000', '#FFA500', '#FFFF00'];
+    const bcolors = ['#0000FF', '#4B0082', '#EE82EE', '#fff', '#FF0000', '#FFA500', '#FFFF00', '#008000'];
+    const vcolors = ['#4B0082', '#EE82EE', '#fff', '#FF0000', '#FFA500', '#FFFF00', '#008000', '#0000FF'];
+    const pcolors = ['#EE82EE', '#fff', '#FF0000', '#FFA500', '#FFFF00', '#008000', '#0000FF', '#4B0082'];
+    const wcolors = ['#fff', '#FF0000', '#FFA500', '#FFFF00', '#008000', '#0000FF', '#4B0082', '#EE82EE'];
+    const rcolors = ['#FF0000', '#FFA500', '#FFFF00', '#008000', '#0000FF', '#4B0082', '#EE82EE', '#fff'];
+    const ocolors = ['#FFA500', '#FFFF00', '#008000', '#0000FF', '#4B0082', '#EE82EE', '#fff', '#FF0000'];
+    
+    
+    
+    let rotationAngle = 95;
+
+  
+    function drawSector(x, y, radius, startAngle, endAngle, color) {
+      context.beginPath();
+      context.moveTo(x, y);
+      context.arc(x, y, radius, startAngle, endAngle);
+      context.fillStyle = color;
+      context.fill();
+      context.strokeStyle = '#000000';
+      context.lineWidth = 3;
+      context.stroke();
+    }
+
+    function drawCircle() {
+      const x = canvas.width / 2;
+      const y = canvas.height / 2;
+
+
+ // Declare the color variable outside the if statements
+
+if (pick === 'green') {
+  colorArraay = bcolors;
+} 
+else if (pick === 'yellow') {
+  colorArraay = gcolors;
+}
+ else if (pick === 'blue') {
+  colorArraay = vcolors;
+} else if (pick == 'violet') {
+  colorArraay = pcolors;
+} else if (pick === 'pink') {
+  colorArraay = wcolors;
+} else if (pick === 'white') {
+  colorArraay = rcolors;
+} else if (pick === 'red') {
+  colorArraay = ocolors;
+} else if (pick === 'orange') {
+  colorArraay = ycolors;
+}
+ else {
+   //Handle cases where pick doesn't match any known color
+  console.log('Unknown color');
+}
+
+
+
+
+      // Draw outer circle
+      for (let i = 0; i < 8; i++) {
+        const startAngle = i * sectorAngle + rotationAngle;
+        const endAngle = (i + 1) * sectorAngle + rotationAngle;
+
+
+        
+color = colorArraay[i];
+
+
+        drawSector(x, y, outerRadius, startAngle, endAngle, color);
+      }
+
+      // Draw inner circle with alphabet and number
+      for (let i = 0; i < 8; i++) {
+        const startAngle = i * sectorAngle;
+        const endAngle = (i + 1) * sectorAngle;
+        const alphabet = String.fromCharCode(65 + i);
+        const number = (i + 1).toString();
+        const text = alphabet + number;
+        const textAngle = startAngle + sectorAngle / 2;
+        const textX = x + (innerRadius / 2) * Math.cos(textAngle);
+        const textY = y + (innerRadius / 2) * Math.sin(textAngle);
+        context.fillStyle = '#000000';
+        context.font = 'bold 24px Arial';
+        context.textAlign = 'center';
+        context.textBaseline = 'middle';
+        context.fillText(text, textX, textY);
+      }
+
+      // Draw inner circle
+      context.beginPath();
+      context.arc(x, y, innerRadius, 0, 2 * Math.PI);
+      context.strokeStyle = '#000000';
+      context.lineWidth = 3;
+      context.stroke();
+    }
+
+    function rotate(angle) {
+      rotationAngle += angle;
+      drawCircle();
+    }
+
+    function rotateClockwise() {
+      console.log("Rotating clockwise");
+  console.log("Current rotation angle:", rotationAngle); 
+
+      rotate(sectorAngle / 1);
+    }
+
+    function rotateCounterClockwise() {
+      console.log("Rotating counter-clockwise");
+  console.log("Current rotation angle:", rotationAngle); 
+      rotate(-sectorAngle / 1);
+    }
+
+    function accessLeftElement() {
+      const currentSector = Math.floor((rotationAngle % (2 * Math.PI)) / sectorAngle);
+      if (currentSector >= 0 && currentSector <= 7) {
+        const alphabet = String.fromCharCode(65 + currentSector);
+        const textBox = document.getElementById('textbox');
+        textBox.value += alphabet;
+        if (textBox.value.length > 8) {
+          textBox.value = textBox.value.slice(textBox.value.length - 8);
+        }
+      }
+    }
+
+    function accessRightElement() {
+      const currentSector = Math.floor((rotationAngle % (2 * Math.PI)) / sectorAngle);
+      if (currentSector >= 0 && currentSector <= 7) {
+        const number = (currentSector + 1).toString();
+        const textBox = document.getElementById('textbox');
+        textBox.value += number;
+        if (textBox.value.length > 8) {
+          textBox.value = textBox.value.slice(textBox.value.length - 8);
+        }
+      }
+    }
+
+    function clearTextBox() {
+      const textBox = document.getElementById('textbox');
+      textBox.value = '';
+    }
+
+
+
+
+    drawCircle();
+
+    
+
+
+  </script>
+</body>
+</html>

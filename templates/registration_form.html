@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registration Form</title>
+    <style>
+        body{
+            background-image: url('https://images.unsplash.com/photo-1692625290439-587150c38aaf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80');
+            background-repeat:no-repeat;
+            background-attachment:fixed;
+            background-size:100% 100%;    
+        }
+        .reg-borders{
+            width:70vw;
+            height: 55vh;
+            border: 2px solid rgba(0,0,0,.1);
+            border-radius: 6px;
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+<body>
+    <br><br><br><br><br><br><br><br>
+    <center> 
+        <div class="reg-borders">
+        <h1><i>Registration Form</i></h1>
+        <form action="submit_form" method="post" onsubmit="return validateForm()">
+            <table align="center">
+                <tr>
+                    <td>
+                        <label for="name"><font color="white">Name:</font></label>
+                    </td>
+                    <td>
+                        <input type="text" id="name" name="name" required><br><br>
+                    </td>
+                </tr>   
+                <tr>
+                    <td>
+                        <label for="email"><font color="white">Email:</font></label>
+                    </td>
+                    <td>
+                        <input type="email" id="email" name="email" required><br><br>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="password"> </label><font color="white">Password:</font></label>
+                    </td>
+                    <td>
+                        <input type="password" id="password" name="password" pattern="[a-hA-H1-8]{4,8}" required><br><br>
+                        <small> <font color="White">Password must be a combination of the first 8 alphabets and numbers, with a minimum length of 4 characters and maximum length of 8characters.</font></small>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="confirm_password"><font color="white">Confirm Password:</font></label>
+                    </td>
+                    <td>
+                        <input type="password" id="confirm_password" name="confirm_password" required><br><br>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="color"><font color="white">Color:</font></label>
+                    </td>
+                    <td>
+                        <select name="color" required>
+                            <option value="">select color</option>
+                                <option value="violet">violet</option>
+                                <option value="pink">pink</option>
+                                <option value="white">white</option>
+                                <option value="red">red</option>
+                                <option value="orange">orange</option>
+                                <option value="yellow">yellow</option>
+                                <option value="green">green</option></option>
+                                <option value="blue">blue</option>
+                            
+                        </select><br><br>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="favourite_place"><font color="white">Favourite Place:</font>></label>
+                    </td>
+                    <td>
+                        <input type="text" id="favourite_place" name="favourite_place" required><br><br>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="submit" value="Submit">
+                    </td>
+                </tr>
+                
+            </table>
+        </form>
+    </div>
+    </center>
+    <script>
+        function validateForm() {
+            var password = document.getElementById("password").value;
+            var confirm_password = document.getElementById("confirm_password").value;
+            if (password != confirm_password) {
+                alert("Passwords do not match!");
+                return false;
+            }
+        }
+    </script>
+</body>
+</html>
