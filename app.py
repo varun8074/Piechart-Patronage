@@ -9,10 +9,10 @@ app = Flask(__name__)
 
 # MySQL configuration
 mysql_config = {
-    'user': 'root',
-    'password': 'root',
-    'host': 'localhost',
-    'database': 'project'
+    'user': 'sql12733161',
+    'password': '9CppnraXPh',
+    'host': 'sql12.freesqldatabase.com',
+    'database': 'sql12733161'
     }
   # Create a connection to the database
 db = mysql.connector.connect(**mysql_config)
