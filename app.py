@@ -1,6 +1,11 @@
 from flask import Flask, render_template, request
 from waitress import serve
 import mysql.connector
+from dotenv import load_dotenv
+import os
+
+# Load the .env file
+load_dotenv()
 
 
 app = Flask(__name__)
