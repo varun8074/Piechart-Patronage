@@ -1,2 +1,6 @@
 mysql-connector-python==8.0.32
+Flask==2.2.3
+Werkzeug==2.2.3
+gunicorn
+waitress
 Flask==3.0.3

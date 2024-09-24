@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request
+from waitress import serve
 import mysql.connector
 
 
@@ -75,16 +76,6 @@ def submit_form():
 def login():
     if request.method == "POST":
         name = request.form["name"]
-
-        conn = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="root",
-            database="project"
-        )
-
-        cursor = conn.cursor()
-
         query = "SELECT * FROM users WHERE name = %s"
         value = (name,)
 
@@ -114,15 +105,6 @@ def authenticate_user():
     if request.method == "POST":
         email = request.form["email"]
         password = request.form["password"]
-
-        conn = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="root",
-            database="project"
-        )
-
-        cursor = conn.cursor()
         query = "SELECT * FROM users WHERE email = %s AND password = %s"
         values = (email, password)
         cursor.execute(query, values)
@@ -149,30 +131,24 @@ def forgot_password_authentication():
             email = request.form["email"]
             favourite_place = request.form["favourite_place"]
             newPassword = request.form["newPassword"]
-
-            conn = mysql.connector.connect(
-                host="localhost",
-                user="root",
-                password="root",
-                database="pj"
-        )
-
-            cursor = conn.cursor()
-
-
             # Update the password
             update_query = "UPDATE users SET password = %s WHERE email = %s AND favourite_place = %s"
             values = (newPassword, email, favourite_place)
 
             #cursor = connection.cursor()
             cursor.execute(update_query, values)
-            conn.commit()
+            db.commit()
+
                 
             if cursor.rowcount > 0:
                 return"Password updated successfully"
             else:
                 return "No records updated"
+mode="dev"
 
+if __name__ == "__main__":
+    if mode=="dev":
+        app.run(debug=True)
+    else:
+        serve(app,threads=2)
 
-# if __name__ == "__main__":
-#     app.run(debug=True)
