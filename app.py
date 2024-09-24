@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request
+from waitress import serve
 import mysql.connector
 
 
@@ -76,15 +77,6 @@ def login():
     if request.method == "POST":
         name = request.form["name"]
 
-        conn = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="root",
-            database="project"
-        )
-
-        cursor = conn.cursor()
-
         query = "SELECT * FROM users WHERE name = %s"
         value = (name,)
 
@@ -115,14 +107,6 @@ def authenticate_user():
         email = request.form["email"]
         password = request.form["password"]
 
-        conn = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="root",
-            database="project"
-        )
-
-        cursor = conn.cursor()
         query = "SELECT * FROM users WHERE email = %s AND password = %s"
         values = (email, password)
         cursor.execute(query, values)
@@ -150,29 +134,22 @@ def forgot_password_authentication():
             favourite_place = request.form["favourite_place"]
             newPassword = request.form["newPassword"]
 
-            conn = mysql.connector.connect(
-                host="localhost",
-                user="root",
-                password="root",
-                database="pj"
-        )
-
-            cursor = conn.cursor()
-
-
             # Update the password
             update_query = "UPDATE users SET password = %s WHERE email = %s AND favourite_place = %s"
             values = (newPassword, email, favourite_place)
 
             #cursor = connection.cursor()
             cursor.execute(update_query, values)
-            conn.commit()
+            db.commit()
                 
             if cursor.rowcount > 0:
                 return"Password updated successfully"
             else:
                 return "No records updated"
-
+mode="dev"
 
 if __name__ == "__main__":
-    app.run(debug=False, port=8080)
+    if mode=="dev":
+        app.run(debug=True)
+    else:
+        serve(app,threads=2)
