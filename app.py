@@ -76,7 +76,6 @@ def submit_form():
 def login():
     if request.method == "POST":
         name = request.form["name"]
-
         query = "SELECT * FROM users WHERE name = %s"
         value = (name,)
 
@@ -106,7 +105,6 @@ def authenticate_user():
     if request.method == "POST":
         email = request.form["email"]
         password = request.form["password"]
-
         query = "SELECT * FROM users WHERE email = %s AND password = %s"
         values = (email, password)
         cursor.execute(query, values)
@@ -133,7 +131,6 @@ def forgot_password_authentication():
             email = request.form["email"]
             favourite_place = request.form["favourite_place"]
             newPassword = request.form["newPassword"]
-
             # Update the password
             update_query = "UPDATE users SET password = %s WHERE email = %s AND favourite_place = %s"
             values = (newPassword, email, favourite_place)
@@ -141,6 +138,7 @@ def forgot_password_authentication():
             #cursor = connection.cursor()
             cursor.execute(update_query, values)
             db.commit()
+
                 
             if cursor.rowcount > 0:
                 return"Password updated successfully"
@@ -153,3 +151,4 @@ if __name__ == "__main__":
         app.run(debug=True)
     else:
         serve(app,threads=2)
+
