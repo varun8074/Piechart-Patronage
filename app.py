@@ -144,11 +144,11 @@ def forgot_password_authentication():
                 return"Password updated successfully"
             else:
                 return "No records updated"
-mode="dev"
+# mode="dev"
 
 if __name__ == "__main__":
-    if mode=="dev":
-        app.run(debug=True)
-    else:
-        serve(app,threads=2)
+#     if mode=="dev":
+#         app.run(debug=True)
+#     else:
+    serve(app,threads=2)
 
